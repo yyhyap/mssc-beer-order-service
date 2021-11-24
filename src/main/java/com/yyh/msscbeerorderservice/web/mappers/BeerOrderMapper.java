@@ -19,11 +19,20 @@ package com.yyh.msscbeerorderservice.web.mappers;
 
 import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.web.model.BeerOrderDto;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(uses = {DateMapper.class, BeerOrderLineMapper.class})
+@DecoratedWith(BeerOrderMapperDecorator.class)
 public interface BeerOrderMapper {
 
+    // map property "id" from class Customer in class BeerOrder to property customerId in BeerOrderDto
+    /*
+    * @ManyToOne
+      private Customer customer;
+    * */
+    @Mapping(target = "customerId", source = "customer.id")
     BeerOrderDto beerOrderToDto(BeerOrder beerOrder);
 
     BeerOrder dtoToBeerOrder(BeerOrderDto dto);
