@@ -1,4 +1,4 @@
-package com.yyh.msscbeerorderservice.web.model;
+package brewery.model;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

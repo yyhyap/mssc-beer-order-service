@@ -1,8 +1,8 @@
 package com.yyh.msscbeerorderservice.web.controllers;
 
 import com.yyh.msscbeerorderservice.services.BeerOrderService;
-import com.yyh.msscbeerorderservice.web.model.BeerOrderDto;
-import com.yyh.msscbeerorderservice.web.model.BeerOrderPagedList;
+import brewery.model.BeerOrderDto;
+import brewery.model.BeerOrderPagedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

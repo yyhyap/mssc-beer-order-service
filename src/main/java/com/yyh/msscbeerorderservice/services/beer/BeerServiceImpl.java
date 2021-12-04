@@ -1,6 +1,6 @@
 package com.yyh.msscbeerorderservice.services.beer;
 
-import com.yyh.msscbeerorderservice.web.model.BeerDto;
+import brewery.model.BeerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
