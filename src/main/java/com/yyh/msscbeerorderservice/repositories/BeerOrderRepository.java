@@ -20,7 +20,7 @@ package com.yyh.msscbeerorderservice.repositories;
 
 import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.domain.Customer;
-import com.yyh.msscbeerorderservice.domain.OrderStatusEnum;
+import com.yyh.msscbeerorderservice.domain.BeerOrderStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,7 +35,7 @@ public interface BeerOrderRepository  extends JpaRepository<BeerOrder, UUID> {
 
     Page<BeerOrder> findAllByCustomer(Customer customer, Pageable pageable);
 
-    List<BeerOrder> findAllByOrderStatus(OrderStatusEnum orderStatusEnum);
+    List<BeerOrder> findAllByOrderStatus(BeerOrderStatusEnum beerOrderStatusEnum);
 
     /*
     * obtains a lock on the data until the transaction is completed.

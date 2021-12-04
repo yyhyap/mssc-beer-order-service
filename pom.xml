@@ -50,6 +50,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.statemachine/spring-statemachine-core -->
+		<dependency>
+			<groupId>org.springframework.statemachine</groupId>
+			<artifactId>spring-statemachine-core</artifactId>
+			<version>3.0.1</version>
+		</dependency>
 	</dependencies>
 
 </project>
