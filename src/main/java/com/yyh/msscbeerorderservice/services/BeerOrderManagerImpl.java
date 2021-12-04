@@ -4,6 +4,7 @@ import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.domain.BeerOrderEventEnum;
 import com.yyh.msscbeerorderservice.domain.BeerOrderStatusEnum;
 import com.yyh.msscbeerorderservice.repositories.BeerOrderRepository;
+import com.yyh.msscbeerorderservice.statemachine.BeerOrderStateChangeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -17,11 +18,16 @@ import javax.transaction.Transactional;
 @Service
 public class BeerOrderManagerImpl implements BeerOrderManager {
 
+    public static final String ORDER_ID_HEADER = "ORDER_ID_HEADER";
+
     @Autowired
     private StateMachineFactory<BeerOrderStatusEnum, BeerOrderEventEnum> stateMachineFactory;
 
     @Autowired
     private BeerOrderRepository beerOrderRepository;
+
+    @Autowired
+    private BeerOrderStateChangeInterceptor beerOrderStateChangeInterceptor;
 
     @Transactional
     @Override
@@ -40,6 +46,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> sm = build(beerOrder);
 
         Message message = MessageBuilder.withPayload(beerOrderEventEnum)
+                .setHeader(ORDER_ID_HEADER, beerOrder.getId().toString())
                 .build();
 
         sm.sendEvent(message);
@@ -54,6 +61,8 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         // Set it to the status retrieved from database
         sm.getStateMachineAccessor().doWithAllRegions(sma -> {
             sma.resetStateMachine(new DefaultStateMachineContext<>(beerOrder.getOrderStatus(), null, null, null));
+            // and save the status back to the database for preStateChange
+            sma.addStateMachineInterceptor(beerOrderStateChangeInterceptor);
         });
 
         sm.start();
