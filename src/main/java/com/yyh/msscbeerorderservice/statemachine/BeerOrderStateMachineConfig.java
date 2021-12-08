@@ -26,6 +26,9 @@ public class BeerOrderStateMachineConfig extends StateMachineConfigurerAdapter<B
     @Autowired
     private Action<BeerOrderStatusEnum, BeerOrderEventEnum> validationFailureAction;
 
+    @Autowired
+    private Action<BeerOrderStatusEnum, BeerOrderEventEnum> allocationFailureAction;
+
     @Override
     public void configure(StateMachineStateConfigurer<BeerOrderStatusEnum, BeerOrderEventEnum> states) throws Exception {
         states.withStates()
@@ -60,6 +63,7 @@ public class BeerOrderStateMachineConfig extends StateMachineConfigurerAdapter<B
                 .and()
                     .withExternal().source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATION_EXCEPTION)
                     .event(BeerOrderEventEnum.ALLOCATION_FAILED)
+                    .action(allocationFailureAction)
                 .and()
                     .withExternal().source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.PENDING_INVENTORY)
                     .event(BeerOrderEventEnum.ALLOCATION_NO_INVENTORY)
