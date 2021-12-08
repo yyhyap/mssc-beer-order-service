@@ -1,4 +1,4 @@
-package brewery.model;
+package com.yyh.brewery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerDto {
+public class OrderStatusUpdate {
 
     @JsonProperty("id")
     private UUID id = null;
@@ -27,6 +27,7 @@ public class CustomerDto {
     @JsonProperty("lastModifiedDate")
     private OffsetDateTime lastModifiedDate = null;
 
-    private String name;
-
+    private UUID orderId;
+    private String customerRef;
+    private String orderStatus;
 }

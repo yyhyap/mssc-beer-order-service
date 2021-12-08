@@ -37,11 +37,11 @@ public interface BeerOrderRepository  extends JpaRepository<BeerOrder, UUID> {
 
     List<BeerOrder> findAllByOrderStatus(BeerOrderStatusEnum beerOrderStatusEnum);
 
-    /*
-    * obtains a lock on the data until the transaction is completed.
-    * This prevents other transactions from making any updates to the entity until the lock is released.
-    * */
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    // findOneById >>> ensure that there is only one or no value, if there are 2 values an exception will be thrown
-    BeerOrder findOneById(UUID id);
+//    /*
+//    * obtains a lock on the data until the transaction is completed.
+//    * This prevents other transactions from making any updates to the entity until the lock is released.
+//    * */
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    // findOneById >>> ensure that there is only one or no value, if there are 2 values an exception will be thrown
+//    BeerOrder findOneById(UUID id);
 }

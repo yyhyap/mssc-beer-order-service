@@ -1,6 +1,6 @@
 package com.yyh.msscbeerorderservice.services.listeners;
 
-import brewery.model.events.AllocateOrderResult;
+import com.yyh.brewery.model.events.AllocateOrderResult;
 import com.yyh.msscbeerorderservice.config.JmsConfig;
 import com.yyh.msscbeerorderservice.services.BeerOrderManager;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class BeerOrderAllocationListener {
+public class BeerOrderAllocationResultListener {
 
     @Autowired
     private BeerOrderManager beerOrderManager;

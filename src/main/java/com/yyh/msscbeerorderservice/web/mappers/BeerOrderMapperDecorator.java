@@ -3,7 +3,7 @@ package com.yyh.msscbeerorderservice.web.mappers;
 import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.domain.Customer;
 import com.yyh.msscbeerorderservice.repositories.CustomerRepository;
-import brewery.model.BeerOrderDto;
+import com.yyh.brewery.model.BeerOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

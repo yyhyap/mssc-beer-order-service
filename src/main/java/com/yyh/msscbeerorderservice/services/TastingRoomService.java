@@ -1,11 +1,13 @@
 package com.yyh.msscbeerorderservice.services;
 
 import com.yyh.msscbeerorderservice.bootstrap.BeerOrderBootStrap;
+import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.domain.Customer;
 import com.yyh.msscbeerorderservice.repositories.BeerOrderRepository;
 import com.yyh.msscbeerorderservice.repositories.CustomerRepository;
-import brewery.model.BeerOrderDto;
-import brewery.model.BeerOrderLineDto;
+import com.yyh.brewery.model.BeerOrderDto;
+import com.yyh.brewery.model.BeerOrderLineDto;
+import com.yyh.msscbeerorderservice.web.mappers.BeerOrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +29,12 @@ public class TastingRoomService {
     private final List<String> beerUpcs = new ArrayList<>(3);
 
     @Autowired
+    private BeerOrderManager beerOrderManager;
+
+    @Autowired
+    private BeerOrderMapper beerOrderMapper;
+
+    @Autowired
     public TastingRoomService(CustomerRepository customerRepository, BeerOrderService beerOrderService,
                               BeerOrderRepository beerOrderRepository) {
         this.customerRepository = customerRepository;
@@ -38,9 +46,9 @@ public class TastingRoomService {
         beerUpcs.add(BeerOrderBootStrap.BEER_3_UPC);
     }
 
-    @Transactional
+    // @Transactional
     //run every 2 seconds
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 8000)
     public void placeTastingRoomOrder(){
 
         List<Customer> customerList = customerRepository.findAllByCustomerNameLike(BeerOrderBootStrap.TASTING_ROOM);

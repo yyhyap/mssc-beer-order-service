@@ -1,9 +1,10 @@
-package brewery.model;
+package com.yyh.brewery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderStatusUpdate {
+public class BeerOrderLineDto {
 
     @JsonProperty("id")
     private UUID id = null;
@@ -27,7 +28,11 @@ public class OrderStatusUpdate {
     @JsonProperty("lastModifiedDate")
     private OffsetDateTime lastModifiedDate = null;
 
-    private UUID orderId;
-    private String customerRef;
-    private String orderStatus;
+    private String upc;
+    private String beerName;
+    private String beerStyle;
+    private UUID beerId;
+    private BigDecimal price;
+    private Integer orderQuantity = 0;
+    private Integer quantityAllocated;
 }

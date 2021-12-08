@@ -6,8 +6,9 @@ import com.yyh.msscbeerorderservice.domain.Customer;
 import com.yyh.msscbeerorderservice.repositories.BeerOrderRepository;
 import com.yyh.msscbeerorderservice.repositories.CustomerRepository;
 import com.yyh.msscbeerorderservice.web.mappers.BeerOrderMapper;
-import brewery.model.BeerOrderDto;
-import brewery.model.BeerOrderPagedList;
+import com.yyh.brewery.model.BeerOrderDto;
+import com.yyh.brewery.model.BeerOrderPagedList;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,22 +24,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BeerOrderServiceImpl implements BeerOrderService {
 
     private final BeerOrderRepository beerOrderRepository;
     private final CustomerRepository customerRepository;
     private final BeerOrderMapper beerOrderMapper;
-    private final ApplicationEventPublisher publisher;
-
-    @Autowired
-    public BeerOrderServiceImpl(BeerOrderRepository beerOrderRepository,
-                                CustomerRepository customerRepository,
-                                BeerOrderMapper beerOrderMapper, ApplicationEventPublisher publisher) {
-        this.beerOrderRepository = beerOrderRepository;
-        this.customerRepository = customerRepository;
-        this.beerOrderMapper = beerOrderMapper;
-        this.publisher = publisher;
-    }
+    private final BeerOrderManager beerOrderManager;
 
     @Override
     public BeerOrderPagedList listOrders(UUID customerId, Pageable pageable) {
@@ -66,8 +58,9 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         }
     }
 
-    @Transactional
+
     @Override
+    //@Transactional
     public BeerOrderDto placeOrder(UUID customerId, BeerOrderDto beerOrderDto) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
@@ -80,12 +73,10 @@ public class BeerOrderServiceImpl implements BeerOrderService {
 
             beerOrder.getBeerOrderLines().forEach(line -> line.setBeerOrder(beerOrder));
 
-            BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
+//            BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
+            BeerOrder savedBeerOrder = beerOrderManager.newBeerOrder(beerOrder);
 
-            log.debug("Saved Beer Order: " + beerOrder.getId());
-
-            //todo impl
-          //  publisher.publishEvent(new NewBeerOrderEvent(savedBeerOrder));
+            log.debug("Saved Beer Order: " + savedBeerOrder.getId());
 
             return beerOrderMapper.beerOrderToDto(savedBeerOrder);
         }
@@ -100,10 +91,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
 
     @Override
     public void pickupOrder(UUID customerId, UUID orderId) {
-        BeerOrder beerOrder = getOrder(customerId, orderId);
-        beerOrder.setOrderStatus(BeerOrderStatusEnum.PICKED_UP);
-
-        beerOrderRepository.save(beerOrder);
+        beerOrderManager.beerOrderPickedUp(orderId);
     }
 
     private BeerOrder getOrder(UUID customerId, UUID orderId){

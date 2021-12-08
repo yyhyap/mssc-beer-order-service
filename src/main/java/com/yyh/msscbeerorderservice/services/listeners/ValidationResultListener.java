@@ -1,6 +1,6 @@
 package com.yyh.msscbeerorderservice.services.listeners;
 
-import brewery.model.events.ValidateOrderResult;
+import com.yyh.brewery.model.events.ValidateOrderResult;
 import com.yyh.msscbeerorderservice.config.JmsConfig;
 import com.yyh.msscbeerorderservice.services.BeerOrderManager;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,10 @@ public class ValidationResultListener {
 
     @JmsListener(destination = JmsConfig.VALIDATE_ORDER_RESPONSE_QUEUE)
     public void listen(ValidateOrderResult validateOrderResult) {
-        final UUID beerOrderId = validateOrderResult.getOrderId();
+        UUID beerOrderId = validateOrderResult.getOrderId();
 
-        log.debug("Validation Result for order id: " + beerOrderId);
+        log.debug("Validation Result for order id: " + beerOrderId + " is " + validateOrderResult.getIsValid());
 
-        beerOrderManager.processValidationResult(beerOrderId, validateOrderResult.getIsValid());
+        beerOrderManager.processValidationResult(validateOrderResult.getOrderId(), validateOrderResult.getIsValid());
     }
 }

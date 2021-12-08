@@ -1,7 +1,7 @@
 package com.yyh.msscbeerorderservice.services;
 
-import brewery.model.BeerOrderDto;
-import brewery.model.BeerOrderPagedList;
+import com.yyh.brewery.model.BeerOrderDto;
+import com.yyh.brewery.model.BeerOrderPagedList;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;

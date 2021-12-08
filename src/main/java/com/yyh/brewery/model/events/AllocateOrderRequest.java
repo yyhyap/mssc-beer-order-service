@@ -1,7 +1,6 @@
-package brewery.model.events;
+package com.yyh.brewery.model.events;
 
-
-import brewery.model.BeerOrderDto;
+import com.yyh.brewery.model.BeerOrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AllocateOrderResult {
+public class AllocateOrderRequest {
     private BeerOrderDto beerOrderDto;
-    private Boolean allocationError = false;
-    private Boolean pendingInventory = false;
 }

@@ -1,6 +1,6 @@
 package com.yyh.msscbeerorderservice.statemachine.actions;
 
-import brewery.model.events.ValidateOrderRequest;
+import com.yyh.brewery.model.events.ValidateOrderRequest;
 import com.yyh.msscbeerorderservice.config.JmsConfig;
 import com.yyh.msscbeerorderservice.domain.BeerOrder;
 import com.yyh.msscbeerorderservice.domain.BeerOrderEventEnum;
@@ -15,6 +15,7 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -33,12 +34,14 @@ public class ValidateOrderAction implements Action<BeerOrderStatusEnum, BeerOrde
     @Override
     public void execute(StateContext<BeerOrderStatusEnum, BeerOrderEventEnum> stateContext) {
         String beerOrderId = (String) stateContext.getMessage().getHeaders().get(BeerOrderManagerImpl.ORDER_ID_HEADER);
-        BeerOrder beerOrder = beerOrderRepository.findOneById(UUID.fromString(beerOrderId));
+        Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(UUID.fromString(beerOrderId));
 
-        jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_QUEUE, ValidateOrderRequest.builder()
-                        .beerOrderDto(beerOrderMapper.beerOrderToDto(beerOrder))
-                        .build());
+        beerOrderOptional.ifPresentOrElse(beerOrder -> {
+            jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_QUEUE, ValidateOrderRequest.builder()
+                    .beerOrderDto(beerOrderMapper.beerOrderToDto(beerOrder))
+                    .build());
 
-        log.debug("Sent validate order request to queue for order id " + beerOrderId);
+            log.debug("Sent validate order request to queue for order id " + beerOrderId);
+        }, () -> log.debug("Beer Order Not Found"));
     }
 }

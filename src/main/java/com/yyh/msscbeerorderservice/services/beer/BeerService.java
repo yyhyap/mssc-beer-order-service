@@ -1,6 +1,6 @@
 package com.yyh.msscbeerorderservice.services.beer;
 
-import brewery.model.BeerDto;
+import com.yyh.brewery.model.BeerDto;
 
 import java.util.Optional;
 import java.util.UUID;
