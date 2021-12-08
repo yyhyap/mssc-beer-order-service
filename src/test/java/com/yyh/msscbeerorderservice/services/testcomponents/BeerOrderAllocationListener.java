@@ -23,6 +23,8 @@ public class BeerOrderAllocationListener {
     public void listen(Message message) {
         AllocateOrderRequest request = (AllocateOrderRequest) message.getPayload();
 
+        System.out.println("##### Allocation Listener RAN #####");
+
         request.getBeerOrderDto().getBeerOrderLines().forEach(beerOrderLineDto -> {
             beerOrderLineDto.setQuantityAllocated(beerOrderLineDto.getOrderQuantity());
         });
